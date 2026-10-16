@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #070818;
+  --color-night: #0c0f2a;
+  --color-deep: #141137;
+  --color-line: #2c2760;
+  --color-text: #eef0ff;
+  --color-muted: #b9bedb;
+  --color-violet: #a78bfa;
+  --color-violet-strong: #8b5cf6;
+  --color-lilac: #ddd6fe;
+  --color-electric: #60a5fa;
+  --color-cyan: #67e8f9;
+  --color-amber: #fbbf6a;
+  --color-ok: #4ade80;
+
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-script: 'Great Vibes', cursive;
+  --font-hand: 'Caveat Variable', 'Segoe Print', cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  background: var(--color-ink);
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lilac);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+::selection {
+  background: rgb(139 92 246 / 0.45);
+}
+
+/* Purple glass panel used across the site. */
+.glass {
+  background: linear-gradient(140deg, rgb(88 62 170 / 0.32), rgb(28 20 72 / 0.42));
+  border: 1px solid rgb(167 139 250 / 0.32);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 18px 50px -24px rgb(124 92 255 / 0.55);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.glass-strong {
+  background: linear-gradient(140deg, rgb(104 74 196 / 0.45), rgb(36 24 90 / 0.6));
+  border: 1px solid rgb(196 181 253 / 0.5);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 0 28px -6px rgb(139 92 246 / 0.7);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 45%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.neon-text {
+  text-shadow:
+    0 0 6px rgb(253 230 190 / 0.9),
+    0 0 18px rgb(251 191 106 / 0.55);
+}
+
+/* Desktop hero stage: every size is expressed in design pixels of a 1536-wide
+   composition, so the whole scene scales with the viewport width. */
+.stage {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  margin-inline: auto;
+}
+.stage-inner {
+  --u: calc(100cqw / 1536);
+  position: relative;
+  height: calc(var(--u) * 1024);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+.float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+.float-med {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.twinkle {
+  animation: twinkle 3.5s ease-in-out infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.flow-edge {
+  stroke-dasharray: 4 8;
+  animation: dash 1.4s linear infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
