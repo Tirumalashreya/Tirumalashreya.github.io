@@ -69,17 +69,22 @@ export default function Backdrop() {
       <rect width="1536" height="1024" fill="url(#wall)" />
       <ellipse cx="768" cy="300" rx="760" ry="380" fill="url(#violetGlow)" opacity="0.35" />
 
-      {/* Window with dusk city */}
-      <g clipPath="url(#window)">
-        <rect x="300" y="48" width="880" height="512" fill="url(#sky)" />
-        <Stars x0={300} x1={1180} y0={60} y1={300} count={80} />
-        <ellipse cx="560" cy="500" rx="260" ry="70" fill="url(#cityHaze)" />
-        <ellipse cx="980" cy="520" rx="220" ry="60" fill="url(#cityHaze)" />
-        <City x0={300} x1={1180} base={562} scale={1} seed={11} />
+      {/* Dusk city, feathered into the room instead of framed */}
+      <defs>
+        <filter id="feather" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="55" />
+        </filter>
+        <mask id="cityFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024">
+          <ellipse cx="768" cy="300" rx="520" ry="330" fill="white" filter="url(#feather)" />
+        </mask>
+      </defs>
+      <g mask="url(#cityFade)">
+        <rect x="150" y="0" width="1236" height="580" fill="url(#sky)" />
+        <Stars x0={220} x1={1316} y0={20} y1={320} count={90} />
+        <ellipse cx="560" cy="500" rx="300" ry="80" fill="url(#cityHaze)" />
+        <ellipse cx="1000" cy="515" rx="260" ry="70" fill="url(#cityHaze)" />
+        <City x0={200} x1={1336} base={562} scale={1} seed={11} />
       </g>
-      <rect x="300" y="48" width="880" height="512" rx="38" fill="none" stroke="#17143b" strokeWidth="16" />
-      <rect x="309" y="57" width="862" height="494" rx="31" fill="none" stroke="rgb(167 139 250 / 0.28)" strokeWidth="1.5" />
-      <rect x="994" y="48" width="14" height="512" fill="#17143b" />
 
       {/* Left wall: plants, books, lamps */}
       <Plant x={52} y={120} scale={1.25} leaves={11} seed={4} pot={false} />
@@ -93,8 +98,7 @@ export default function Backdrop() {
       <GlobeLamp cx={276} cy={548} r={21} />
 
       {/* Right wall: shelf, plants, lamps */}
-      <rect x="1012" y="96" width="210" height="7" rx="2" fill="#2a2152" />
-      <Plant x={1110} y={96} scale={1.05} leaves={9} seed={21} />
+      <Plant x={1200} y={70} scale={1.0} leaves={9} seed={21} pot={false} />
       <Plant x={1500} y={430} scale={1.2} leaves={9} seed={33} flip />
       <GlobeLamp cx={1306} cy={420} r={14} />
       <GlobeLamp cx={1508} cy={548} r={28} />
@@ -104,16 +108,8 @@ export default function Backdrop() {
       <path d="M0 560 Q768 528 1536 560" fill="none" stroke="rgb(167 139 250 / 0.55)" strokeWidth="2" filter="url(#soft)" />
       <ellipse cx="48" cy="600" rx="110" ry="26" fill="#ffb35c" opacity="0.18" filter="url(#softer)" />
       <ellipse cx="1500" cy="610" rx="120" ry="26" fill="#ffb35c" opacity="0.18" filter="url(#softer)" />
-      <ellipse cx="768" cy="720" rx="330" ry="110" fill="url(#blueGlow)" opacity="0.6" />
-
-      {/* Orbit ellipses on the desk around the globe */}
-      <ellipse cx="768" cy="706" rx="388" ry="96" fill="none" stroke="#a78bfa" strokeWidth="6" opacity="0.35" filter="url(#soft)" />
-      <ellipse cx="768" cy="706" rx="388" ry="96" fill="none" stroke="#c4b5fd" strokeWidth="1.6" opacity="0.8" />
-      <ellipse cx="768" cy="712" rx="318" ry="72" fill="none" stroke="#60a5fa" strokeWidth="1.2" opacity="0.45" strokeDasharray="2 6" />
-      {[0.1, 0.33, 0.58, 0.81].map((p) => {
-        const a = p * Math.PI * 2;
-        return <circle key={p} cx={768 + Math.cos(a) * 388} cy={706 + Math.sin(a) * 96} r="3.5" fill="#e0e7ff" />;
-      })}
+      {/* Soft light pooled under the globe */}
+      <ellipse cx="768" cy="680" rx="250" ry="130" fill="url(#blueGlow)" opacity="0.5" />
 
       {/* Notebook and pencil on the desk */}
       <path d="M300 590 L420 576 L452 594 L330 610 Z" fill="#e8e4f6" opacity="0.9" />

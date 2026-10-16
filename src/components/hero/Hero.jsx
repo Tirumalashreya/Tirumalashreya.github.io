@@ -116,31 +116,35 @@ const shift = (x, y) => ({
 });
 
 const PLATFORM_X = [96, 322, 552, 800, 1032, 1254];
-// The two upper panels float above the 3D layer; the lower two sit beneath it,
-// so the globe overlaps them as in the reference composition.
+// Globe centre and the four panels arranged symmetrically around it, clear of the sphere.
+const GLOBE = { x: 768, y: 676 };
 const FEATURE_BOXES = [
-  { style: box(428, 574, 222, 86), front: true },
-  { style: box(886, 574, 222, 86), front: true },
-  { style: box(430, 690, 268, 96), front: false },
-  { style: box(838, 690, 268, 96), front: false },
+  box(400, 596, 246, 76),
+  box(890, 596, 246, 76),
+  box(400, 690, 246, 76),
+  box(890, 690, 246, 76),
 ];
 
 function FeatureLinks({ active }) {
+  // Short connectors from each panel's inner edge to the globe's rim.
   const links = [
-    [650, 617, 700, 646],
-    [886, 617, 836, 646],
-    [698, 738, 716, 738],
-    [838, 738, 820, 738],
+    [646, 634, 680, 648],
+    [890, 634, 856, 648],
+    [646, 728, 680, 712],
+    [890, 728, 856, 712],
   ];
   return (
     <svg viewBox="0 0 1536 1024" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
-      <line x1="768" y1="571" x2="768" y2="604" stroke="#c4b5fd" strokeWidth="1.5" opacity="0.7" />
-      {links.map(([x1, y1, x2, y2], i) => (
-        <g key={i} opacity={active === i ? 1 : 0.55}>
-          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={active === i ? '#e0e7ff' : '#a78bfa'} strokeWidth={active === i ? 2 : 1.2} className="flow-edge" />
-          <circle cx={x1} cy={y1} r="3.5" fill="#c4b5fd" />
-        </g>
-      ))}
+      <line x1={GLOBE.x} y1="562" x2={GLOBE.x} y2="572" stroke="#c4b5fd" strokeWidth="1.5" opacity="0.6" />
+      {links.map(([x1, y1, x2, y2], i) => {
+        const on = active === i;
+        return (
+          <g key={i} opacity={on ? 1 : 0.5}>
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={on ? '#e0e7ff' : '#a78bfa'} strokeWidth={on ? 2 : 1.2} strokeLinecap="round" />
+            <circle cx={x2} cy={y2} r={on ? 3.5 : 2.5} fill={on ? '#e0e7ff' : '#c4b5fd'} />
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -181,7 +185,7 @@ function DesktopStage({ refs, state }) {
       </div>
 
       <div className="pointer-events-none absolute inset-0 z-[2]">
-        <div ref={refs.globe} style={box(548, 535, 440, 330)}>
+        <div ref={refs.globe} style={box(GLOBE.x - 170, GLOBE.y - 135, 340, 270)}>
           <GlobeFallback hidden={ready3D} size={u(184)} />
         </div>
         <div ref={refs.robotA} style={box(420, 448, 165, 155)}>
@@ -208,15 +212,11 @@ function DesktopStage({ refs, state }) {
         <div className="pointer-events-auto" style={box(105, 112, 480)}>
           <HeroIntro stage />
         </div>
-        <AgenticLabel style={box(662, 505, 215, 66)} />
+        <AgenticLabel style={box(668, 500, 200, 62)} />
       </div>
 
       {globeFeatures.map((f, i) => (
-        <div
-          key={f.id}
-          className={`absolute ${FEATURE_BOXES[i].front ? 'z-[4]' : 'z-[2]'}`}
-          style={FEATURE_BOXES[i].style}
-        >
+        <div key={f.id} className="absolute z-[4]" style={FEATURE_BOXES[i]}>
           <FeaturePanel
             feature={f}
             active={activeFeature === i}
@@ -241,8 +241,13 @@ function CompactHero({ refs, state }) {
       </div>
 
       <div className="relative mx-auto mt-10 max-w-xl px-5 sm:px-8">
-        <div className="relative overflow-hidden rounded-[2rem] border-[10px] border-[#17143b] shadow-[0_0_0_1px_rgb(167_139_250_/_0.3),0_30px_80px_-30px_rgb(124_92_255_/_0.6)]">
-          <svg viewBox="300 48 880 512" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <div className="relative">
+          <svg
+            viewBox="300 48 880 512"
+            className="absolute inset-0 h-full w-full [mask-image:radial-gradient(ellipse_70%_75%_at_50%_45%,#000_45%,transparent_100%)]"
+            preserveAspectRatio="xMidYMax slice"
+            aria-hidden="true"
+          >
             <SceneDefs />
             <rect x="300" y="48" width="880" height="512" fill="url(#sky)" />
             <Stars x0={300} x1={1180} y0={60} y1={300} count={50} />
@@ -251,7 +256,7 @@ function CompactHero({ refs, state }) {
           <div className="relative z-[2] mx-auto w-[82%] pt-10">
             <Character className="float-slow block" />
           </div>
-          <div aria-hidden="true" className="relative z-[2] h-6 bg-gradient-to-b from-[#2a2060] to-[#120e33]" />
+          <div aria-hidden="true" className="relative z-[2] h-6 rounded-[50%] bg-[radial-gradient(closest-side,#2a2060,transparent)]" />
         </div>
         <div ref={refs.robotA} className="pointer-events-none absolute -top-6 right-0 z-[2] h-28 w-24 sm:right-2 sm:h-32 sm:w-28">
           <RobotFallback hidden={ready3D} />

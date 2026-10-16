@@ -30,10 +30,10 @@ const atmosphereShader = {
 
 // One ring per feature panel, in globeFeatures order.
 const RINGS = [
-  { radius: 1.42, tilt: [1.2, 0, 0.35], color: '#a78bfa' },
-  { radius: 1.58, tilt: [1.35, 0, -0.4], color: '#60a5fa' },
-  { radius: 1.74, tilt: [1.05, 0, -0.15], color: '#c4b5fd' },
-  { radius: 1.9, tilt: [1.45, 0, 0.2], color: '#67e8f9' },
+  { radius: 1.16, tilt: [1.2, 0, 0.35], color: '#a78bfa' },
+  { radius: 1.24, tilt: [1.35, 0, -0.4], color: '#60a5fa' },
+  { radius: 1.32, tilt: [1.05, 0, -0.15], color: '#c4b5fd' },
+  { radius: 1.4, tilt: [1.45, 0, 0.2], color: '#67e8f9' },
 ];
 
 function Ring({ radius, tilt, color, active, animate, index }) {
@@ -41,7 +41,7 @@ function Ring({ radius, tilt, color, active, animate, index }) {
   const sat = useRef();
   useFrame((state, dt) => {
     if (mat.current) {
-      const target = active ? 1 : 0.32;
+      const target = active ? 1 : 0.22;
       mat.current.opacity += (target - mat.current.opacity) * Math.min(1, dt * 8);
     }
     if (sat.current) {
@@ -70,7 +70,7 @@ function Particles({ count, animate }) {
   const geometry = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const r = 1.28 + Math.random() * 0.45;
+      const r = 1.08 + Math.random() * 0.22;
       const th = Math.random() * Math.PI * 2;
       const ph = Math.acos(2 * Math.random() - 1);
       pos[i * 3] = r * Math.sin(ph) * Math.cos(th);

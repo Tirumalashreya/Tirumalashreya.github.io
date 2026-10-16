@@ -76,9 +76,9 @@ export default function SceneCanvas({ tracks, activeFeature, hoveredPlatform, re
       <Suspense fallback={null}>
         {tracks.globe && (
           <View track={tracks.globe}>
-            <PerspectiveCamera makeDefault position={[0, 0, 4.9]} fov={38} />
+            <PerspectiveCamera makeDefault position={[0, 0, 4.35]} fov={38} />
             <Lights warm={0.6} />
-            <Globe activeIndex={activeFeature} animate={animate} particleCount={mobile ? 110 : 260} />
+            <Globe activeIndex={activeFeature} animate={animate} particleCount={mobile ? 80 : 140} />
           </View>
         )}
         {tracks.robots.map((r) => (
